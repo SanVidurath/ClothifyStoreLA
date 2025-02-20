@@ -1,4 +1,4 @@
-package dto;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +9,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Supplier {
+public class CustomerEntity {
     private Integer id;
     private String name;
-    private String company;
     private String email;
-    private String phoneNo;
+    private String phoneNumber;
 }

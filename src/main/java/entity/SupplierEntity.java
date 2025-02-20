@@ -9,7 +9,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SupplierController {
+public class SupplierEntity {
     private Integer id;
     private String name;
     private String company;

@@ -1,4 +1,8 @@
 package service.custom;
 
-public interface SupplierService {
+import dto.Supplier;
+import service.CrudService;
+import service.SuperService;
+
+public interface SupplierService extends CrudService<Supplier, String> {
 }

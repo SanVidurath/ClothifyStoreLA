@@ -40,7 +40,7 @@
             <Font size="10.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="hyperClickHere" layoutX="420.0" layoutY="228.0" onAction="#hyperResetPasswordOnAction" text="click here">
+      <Hyperlink fx:id="hyperResetPassword" layoutX="420.0" layoutY="228.0" onAction="#hyperResetPasswordOnAction" text="click here">
          <font>
             <Font size="10.0" />
          </font>

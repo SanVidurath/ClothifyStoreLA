@@ -9,10 +9,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Supplier {
+public class Customer {
     private Integer id;
     private String name;
-    private String company;
     private String email;
-    private String phoneNo;
+    private String phoneNumber;
 }
