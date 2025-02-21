@@ -13,6 +13,7 @@ import java.net.URL;
 
 public class AdminDashboardWindowController {
 
+
     @FXML
     private AnchorPane ancPaneLoadContainer;
 
@@ -26,21 +27,8 @@ public class AdminDashboardWindowController {
     private Button btnLoadViewReports;
 
     @FXML
-    void btnLoadChangeEmailFormOnAction(ActionEvent event) {
-        URL resource = this.getClass().getResource("/view/change_email_form.fxml");
+    private Button btnLoadModifyEmployee;
 
-        assert resource!=null;
-
-        Parent load = null;
-        try {
-            load = FXMLLoader.load(resource);
-        } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-        }
-
-        ancPaneLoadContainer.getChildren().clear();
-        ancPaneLoadContainer.getChildren().add(load);
-    }
 
     @FXML
     void btnLoadEmployeeFormOnAction(ActionEvent event) {
@@ -64,4 +52,19 @@ public class AdminDashboardWindowController {
 
     }
 
+    public void btnLoadModifyEmployeeOnAction(ActionEvent actionEvent) {
+        URL resource = this.getClass().getResource("/view/modify_employees_form.fxml");
+
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
+    }
 }

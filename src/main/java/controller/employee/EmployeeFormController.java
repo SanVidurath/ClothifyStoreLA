@@ -23,22 +23,15 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EmployeeFormController implements Initializable {
+public class EmployeeFormController{
 
     @FXML
     private Button btnAdd;
 
-    @FXML
-    private Button btnDelete;
 
     @FXML
     private Button btnReload;
 
-    @FXML
-    private Button btnSearch;
-
-    @FXML
-    private Button btnUpdate;
 
     @FXML
     private TableColumn<?, ?> colAddress;
@@ -83,12 +76,12 @@ public class EmployeeFormController implements Initializable {
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
-        String nameText = txtName.getText();
-        String addressText = txtAddress.getText();
-        String emailText = txtEmail.getText();
-        String phoneNoText = txtPhoneNo.getText();
-        String passwordText = txtPassword.getText();
-        String confirmPasswordText = txtConfirmPassword.getText();
+        String nameText = txtName.getText().toLowerCase();
+        String addressText = txtAddress.getText().toLowerCase();
+        String emailText = txtEmail.getText().toLowerCase();
+        String phoneNoText = txtPhoneNo.getText().toLowerCase();
+        String passwordText = txtPassword.getText().toLowerCase();
+        String confirmPasswordText = txtConfirmPassword.getText().toLowerCase();
         if(nameText.isEmpty()||addressText.isEmpty()||emailText.isEmpty()||phoneNoText.isEmpty()||passwordText.isEmpty()||confirmPasswordText.isEmpty()){
             new Alert(Alert.AlertType.ERROR,"all fields must be filled").show();
         }else{
@@ -121,30 +114,6 @@ public class EmployeeFormController implements Initializable {
         return matcher.matches();
     }
 
-    @FXML
-    void btnDeleteOnAction(ActionEvent event) {
-        Employee employee= null;
-        try {
-            employee = employeeService.search(txtEmail.getText());
-            if(employee==null){
-                new Alert(Alert.AlertType.ERROR,"check email and try again").show();
-            }else{
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to delete this employee?");
-                Optional<ButtonType> buttonType = alert.showAndWait();
-                if(buttonType.isPresent() && buttonType.get().getText().equals("OK")){
-                    boolean isEmployeeDeleted = employeeService.delete(employee.getEmail());
-                    if(isEmployeeDeleted){
-                        new Alert(Alert.AlertType.INFORMATION,"employee has been deleted successfully").show();
-                    }else{
-                        new Alert(Alert.AlertType.ERROR,"some error has occured, try again later.").show();
-                    }
-
-                }
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-        }
-    }
 
     @FXML
     void btnReloadOnAction(ActionEvent event) {
@@ -167,71 +136,5 @@ public class EmployeeFormController implements Initializable {
         colPhoneNo.setCellValueFactory(new PropertyValueFactory<>("phoneNo"));
     }
 
-    @FXML
-    void btnSearchOnAction(ActionEvent event) {
-        String emailText = txtEmail.getText();
-        if(emailText.isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"email must be given to search for an employee").show();
-        }else{
-            try {
-                Employee employee = employeeService.search(emailText);
-                if(employee==null){
-                    new Alert(Alert.AlertType.ERROR,"employee not found. Check email and try again.").show();
-                }else{
-                    txtName.setText(employee.getName());
-                    txtAddress.setText(employee.getAddress());
-                    txtPhoneNo.setText(employee.getPhoneNo());
-                    btnUpdate.setDisable(false);
-                    btnDelete.setDisable(false);
-                }
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-            }
-        }
-    }
 
-    @FXML
-    void btnUpdateOnAction(ActionEvent event) {
-        String nameText = txtName.getText();
-        String addressText = txtAddress.getText();
-        String emailText = txtEmail.getText();
-        String phoneNoText = txtPhoneNo.getText();
-        String passwordText = txtPassword.getText();
-        String confirmPasswordText = txtConfirmPassword.getText();
-        if(nameText.isEmpty()||addressText.isEmpty()||emailText.isEmpty()||phoneNoText.isEmpty()||passwordText.isEmpty()||confirmPasswordText.isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"all fields must be filled").show();
-        }else{
-            if(!passwordText.equals(confirmPasswordText)){
-                new Alert(Alert.AlertType.ERROR,"password fields do not match").show();
-            }else{
-                BasicTextEncryptor basicTextEncryptor = new BasicTextEncryptor();
-                basicTextEncryptor.setPassword(emailText);
-                String encrypted = basicTextEncryptor.encrypt(passwordText);
-                Employee employee = new Employee(1,nameText, addressText, emailText, phoneNoText, encrypted);
-                try {
-                    Employee searchedEmployee = employeeService.search(emailText);
-                    if(searchedEmployee==null){
-                        new Alert(Alert.AlertType.ERROR, "check email and try again later.").show();
-                    }else{
-                        boolean isUpdatedEmployee = employeeService.update(employee);
-                        if(isUpdatedEmployee){
-                            new Alert(Alert.AlertType.INFORMATION, "employee updated successfully").show();
-                        }else{
-                            new Alert(Alert.AlertType.ERROR, "employee not updated. Try again later.").show();
-                        }
-                    }
-
-                } catch (SQLException e) {
-                    new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-                }
-            }
-
-        }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        btnDelete.setDisable(true);
-        btnUpdate.setDisable(true);
-    }
 }

@@ -22,13 +22,12 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SupplierFormController implements Initializable {
+public class SupplierFormController{
 
     @FXML
     private Button btnAdd;
 
-    @FXML
-    private Button btnDelete;
+
 
     @FXML
     private Button btnReload;
@@ -76,10 +75,10 @@ public class SupplierFormController implements Initializable {
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
-        String nameText = txtName.getText();
-        String companyText = txtCompany.getText();
-        String emailText = txtEmail.getText();
-        String phoneNoText = txtPhoneNo.getText();
+        String nameText = txtName.getText().toLowerCase();
+        String companyText = txtCompany.getText().toLowerCase();
+        String emailText = txtEmail.getText().toLowerCase();
+        String phoneNoText = txtPhoneNo.getText().toLowerCase();
 
         if (nameText.isEmpty() || companyText.isEmpty() || emailText.isEmpty() || phoneNoText.isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "all fields must be filled").show();
@@ -110,27 +109,7 @@ public class SupplierFormController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        Supplier supplier = null;
-        try {
-            supplier = supplierService.search(txtEmail.getText());
-            if (supplier == null) {
-                new Alert(Alert.AlertType.ERROR, "check email and try again").show();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to delete this supplier?");
-                Optional<ButtonType> buttonType = alert.showAndWait();
-                if (buttonType.isPresent() && buttonType.get().getText().equals("OK")) {
-                    boolean isDeletedSupplier = supplierService.delete(supplier.getEmail());
-                    if (isDeletedSupplier) {
-                        new Alert(Alert.AlertType.INFORMATION, "supplier has been deleted successfully").show();
-                    } else {
-                        new Alert(Alert.AlertType.ERROR, "some error has occurred, try again later.").show();
-                    }
 
-                }
-            }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-        }
     }
 
     @FXML
@@ -156,62 +135,13 @@ public class SupplierFormController implements Initializable {
 
     @FXML
     void btnSearchOnAction(ActionEvent event) {
-        String emailText = txtEmail.getText();
-        if (emailText.isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "email must be given to search for a supplier").show();
-        } else {
-            try {
-                Supplier supplier = supplierService.search(emailText);
-                if (supplier == null) {
-                    new Alert(Alert.AlertType.ERROR, "supplier not found. Check email and try again.").show();
-                } else {
-                    txtName.setText(supplier.getName());
-                    txtCompany.setText(supplier.getCompany());
-                    txtPhoneNo.setText(supplier.getPhoneNo());
-                    btnUpdate.setDisable(false);
-                    btnDelete.setDisable(false);
-                }
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-            }
-        }
+
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        String nameText = txtName.getText();
-        String companyText = txtCompany.getText();
-        String emailText = txtEmail.getText();
-        String phoneNoText = txtPhoneNo.getText();
-        if (nameText.isEmpty() || companyText.isEmpty() || emailText.isEmpty() || phoneNoText.isEmpty()) {
-            new Alert(Alert.AlertType.ERROR, "all fields must be filled").show();
-        } else {
 
-            Supplier supplier = new Supplier(1, nameText, companyText, emailText, phoneNoText);
-            try {
-                Supplier searchedSupplier = supplierService.search(emailText);
-                if (searchedSupplier == null) {
-                    new Alert(Alert.AlertType.ERROR, "check email and try again later.").show();
-                } else {
-                    boolean isUpdatedSupplier = supplierService.update(supplier);
-                    if (isUpdatedSupplier) {
-                        new Alert(Alert.AlertType.INFORMATION, "supplier updated successfully").show();
-                    } else {
-                        new Alert(Alert.AlertType.ERROR, "supplier not updated. Try again later.").show();
-                    }
-                }
-
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
-            }
-
-
-        }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        btnUpdate.setDisable(true);
-        btnDelete.setDisable(true);
-    }
+
 }

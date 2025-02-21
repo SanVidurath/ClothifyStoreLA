@@ -14,16 +14,21 @@
             <Font name="System Bold" size="22.0" />
          </font>
       </Label>
-      <Button fx:id="btnLoadEmployeeForm" layoutX="22.0" layoutY="142.0" mnemonicParsing="false" onAction="#btnLoadEmployeeFormOnAction" style="-fx-background-color: #061E3A;" text="Employee Form" textFill="WHITE">
+      <Button fx:id="btnLoadEmployeeForm" layoutX="22.0" layoutY="127.0" mnemonicParsing="false" onAction="#btnLoadEmployeeFormOnAction" style="-fx-background-color: #061E3A;" text="Employee Form" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnLoadViewReports" layoutX="31.0" layoutY="200.0" mnemonicParsing="false" onAction="#btnLoadViewReportsOnAction" style="-fx-background-color: #061E3A;" text="View Reports" textFill="WHITE">
+      <Button fx:id="btnLoadViewReports" layoutX="31.0" layoutY="185.0" mnemonicParsing="false" onAction="#btnLoadViewReportsOnAction" style="-fx-background-color: #061E3A;" text="View Reports" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
       <AnchorPane fx:id="ancPaneLoadContainer" layoutX="200.0" prefHeight="400.0" prefWidth="601.0" />
+      <Button fx:id="btnLoadModifyEmployee" layoutX="13.0" layoutY="245.0" mnemonicParsing="false" onAction="#btnLoadModifyEmployeeOnAction" style="-fx-background-color: #061E3A;" text="Modify Employee" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

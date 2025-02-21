@@ -13,6 +13,7 @@ import java.net.URL;
 
 public class UserDashboardWindowController {
 
+    public Button btnLoadModifySupplierForm;
     @FXML
     private AnchorPane ancPaneLoadContainer;
 
@@ -39,17 +40,53 @@ public class UserDashboardWindowController {
 
     @FXML
     void btnLoadAddProductsFormOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/add_products_form.fxml");
 
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
     }
 
     @FXML
     void btnLoadCustomerFormOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/add_customer_form.fxml");
 
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
     }
 
     @FXML
     void btnLoadModifyProductsFormOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/modify_products_window.fxml");
 
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
     }
 
     @FXML
@@ -84,4 +121,19 @@ public class UserDashboardWindowController {
 
     }
 
+    public void btnLoadModifySupplierFormOnAction(ActionEvent actionEvent) {
+        URL resource = this.getClass().getResource("/view/modify_supplier_form.fxml");
+
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
+    }
 }

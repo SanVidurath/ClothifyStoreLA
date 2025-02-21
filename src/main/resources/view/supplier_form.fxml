@@ -30,22 +30,7 @@
             <TableColumn fx:id="colEmail" prefWidth="138.0" text="Email" />
         </columns>
       </TableView>
-      <Button fx:id="btnAdd" layoutX="260.0" layoutY="148.0" mnemonicParsing="false" onAction="#btnAddOnAction" style="-fx-background-color: #061E3A;" text="Add" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnSearch" layoutX="329.0" layoutY="148.0" mnemonicParsing="false" onAction="#btnSearchOnAction" style="-fx-background-color: #061E3A;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnUpdate" layoutX="412.0" layoutY="148.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" style="-fx-background-color: #061E3A;" text="Update" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnDelete" layoutX="495.0" layoutY="148.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" style="-fx-background-color: #061E3A;" text="Delete" textFill="WHITE">
+      <Button fx:id="btnAdd" layoutX="490.0" layoutY="148.0" mnemonicParsing="false" onAction="#btnAddOnAction" style="-fx-background-color: #061E3A;" text="Add" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

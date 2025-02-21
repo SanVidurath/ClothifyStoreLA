@@ -3,6 +3,7 @@ package service.custom.impl;
 import db.DBConnection;
 import dto.Employee;
 import entity.EmployeeEntity;
+import javafx.collections.ObservableList;
 import org.modelmapper.ModelMapper;
 import repository.DaoFactory;
 import repository.SuperDao;
@@ -58,4 +59,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDao.delete(email);
     }
 
+    @Override
+    public ObservableList<Integer> getIds() throws SQLException {
+        return employeeDao.getIds();
+    }
+
+    @Override
+    public Employee search(Integer id) throws SQLException {
+        EmployeeEntity employeeEntity = employeeDao.search(id);
+        return new ModelMapper().map(employeeEntity,Employee.class);
+    }
 }

@@ -3,6 +3,8 @@ package repository.custom.impl;
 import db.DBConnection;
 import entity.EmployeeEntity;
 import entity.SupplierEntity;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import repository.custom.SupplierDao;
 
 import java.sql.Connection;
@@ -66,5 +68,26 @@ public class SupplierDaoImpl implements SupplierDao {
         String sql = "Delete from suppliers where email='"+email+"'";
         Connection connection = DBConnection.getInstance().getConnection();
         return connection.createStatement().executeUpdate(sql)>0;
+    }
+
+    @Override
+    public ObservableList<Integer> getIds() throws SQLException {
+        ObservableList<Integer> supplierIds = FXCollections.observableArrayList();
+        List<SupplierEntity> supplierEntityList = getAll();
+        supplierEntityList.forEach(supplier -> supplierIds.add(supplier.getId()));
+        return supplierIds;
+    }
+
+    @Override
+    public SupplierEntity search(Integer id) throws SQLException {
+        SupplierEntity supplierEntity = null;
+        String sql = "Select * from suppliers where id='" + id + "'";
+        Connection connection = DBConnection.getInstance().getConnection();
+        ResultSet resultSet = connection.createStatement().executeQuery(sql);
+        while (resultSet.next()) {
+            supplierEntity = new SupplierEntity(Integer.parseInt(resultSet.getString(1)), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),resultSet.getString(5) );
+
+        }
+        return supplierEntity;
     }
 }

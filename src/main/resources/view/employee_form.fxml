@@ -20,22 +20,7 @@
       <JFXTextField fx:id="txtPhoneNo" layoutX="35.0" layoutY="149.0" promptText="phone number" />
       <JFXTextField fx:id="txtPassword" layoutX="232.0" layoutY="149.0" promptText="password" />
       <JFXTextField fx:id="txtConfirmPassword" layoutX="433.0" layoutY="149.0" promptText="confirm password" />
-      <Button fx:id="btnAdd" layoutX="233.0" layoutY="201.0" mnemonicParsing="false" onAction="#btnAddOnAction" style="-fx-background-color: #061E3A;" text="Add" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnSearch" layoutX="301.0" layoutY="201.0" mnemonicParsing="false" onAction="#btnSearchOnAction" style="-fx-background-color: #061E3A;" text="Search" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnUpdate" layoutX="384.0" layoutY="201.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" style="-fx-background-color: #061E3A;" text="Update" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="12.0" />
-         </font>
-      </Button>
-      <Button fx:id="btnDelete" layoutX="463.0" layoutY="201.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" style="-fx-background-color: #061E3A;" text="Delete" textFill="WHITE">
+      <Button fx:id="btnAdd" layoutX="488.0" layoutY="201.0" mnemonicParsing="false" onAction="#btnAddOnAction" style="-fx-background-color: #061E3A;" text="Add" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

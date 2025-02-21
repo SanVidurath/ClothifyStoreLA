@@ -78,7 +78,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
     public ObservableList<Integer> getIds() throws SQLException {
         ObservableList<Integer> employeeIds = FXCollections.observableArrayList();
         List<EmployeeEntity> employeeEntityList = getAll();
-        employeeEntityList.forEach(employee -> employeeIds.add(employee.getId()));
+        employeeEntityList.forEach(employeeEntity -> employeeIds.add(employeeEntity.getId()));
         return employeeIds;
     }
 

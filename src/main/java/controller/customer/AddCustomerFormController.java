@@ -1,14 +1,22 @@
 package controller.customer;
 
 import com.jfoenix.controls.JFXTextField;
+import dto.Customer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import service.ServiceFactory;
+import service.custom.CustomerService;
+import util.ServiceType;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +41,7 @@ public class AddCustomerFormController {
     private TableColumn<?, ?> colPhoneNo;
 
     @FXML
-    private TableView<?> tblCustomers;
+    private TableView tblCustomers;
 
     @FXML
     private JFXTextField txtEmail;
@@ -47,11 +55,13 @@ public class AddCustomerFormController {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
+    CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+
     @FXML
     void btnAddCustomerOnAction(ActionEvent event) {
-        String nameText = txtName.getText();
-        String emailText = txtEmail.getText();
-        String phoneNoText = txtPhoneNo.getText();
+        String nameText = txtName.getText().toLowerCase();
+        String emailText = txtEmail.getText().toLowerCase();
+        String phoneNoText = txtPhoneNo.getText().toLowerCase();
 
         if(nameText.isEmpty()||emailText.isEmpty()||phoneNoText.isEmpty()){
             new Alert(Alert.AlertType.ERROR,"all fields must be filled").show();
@@ -59,9 +69,8 @@ public class AddCustomerFormController {
             new Alert(Alert.AlertType.ERROR, "not a valid email address").show();
         }else{
             Customer customer = new Customer(1, nameText, emailText, phoneNoText);
-            boolean isAddedCustomer = false;
             try {
-                isAddedCustomer = new CustomerController().add(customer);
+                boolean isAddedCustomer = customerService.add(customer);
                 if(isAddedCustomer){
                     new Alert(Alert.AlertType.INFORMATION,"customer added successfully").show();
                 }
@@ -79,7 +88,24 @@ public class AddCustomerFormController {
 
     @FXML
     void btnReloadOnAction(ActionEvent event) {
-
+        loadData();
     }
 
+    private void loadData(){
+        ObservableList<Customer> customerObservableList = FXCollections.observableArrayList();
+        try {
+            List<Customer> customerList = customerService.getAll();
+            customerObservableList.addAll(customerList);
+
+            tblCustomers.setItems(customerObservableList);
+
+            colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+            colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+            colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+            colPhoneNo.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+    }
 }

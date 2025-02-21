@@ -4,6 +4,7 @@ import dto.Employee;
 import dto.Supplier;
 import entity.EmployeeEntity;
 import entity.SupplierEntity;
+import javafx.collections.ObservableList;
 import org.apache.poi.ss.formula.functions.Mode;
 import org.modelmapper.ModelMapper;
 import repository.DaoFactory;
@@ -57,5 +58,16 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public boolean delete(String email) throws SQLException {
         return supplierDao.delete(email);
+    }
+
+    @Override
+    public ObservableList<Integer> getIds() throws SQLException {
+        return supplierDao.getIds();
+    }
+
+    @Override
+    public Supplier search(Integer id) throws SQLException {
+        SupplierEntity supplierEntity = supplierDao.search(id);
+        return new ModelMapper().map(supplierEntity,Supplier.class);
     }
 }
