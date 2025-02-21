@@ -91,12 +91,36 @@ public class UserDashboardWindowController {
 
     @FXML
     void btnLoadOrderAndReturnsOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/orders_and_returns_form.fxml");
 
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
     }
 
     @FXML
     void btnLoadOrderFormOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/order_form.fxml");
 
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
     }
 
     @FXML
@@ -118,7 +142,19 @@ public class UserDashboardWindowController {
 
     @FXML
     void btnLoadViewSupplierProductsOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/supplier_products_window.fxml");
 
+        assert resource!=null;
+
+        Parent load = null;
+        try {
+            load = FXMLLoader.load(resource);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
+        ancPaneLoadContainer.getChildren().clear();
+        ancPaneLoadContainer.getChildren().add(load);
     }
 
     public void btnLoadModifySupplierFormOnAction(ActionEvent actionEvent) {

@@ -2,6 +2,7 @@ package service.custom.impl;
 
 import dto.Customer;
 import entity.CustomerEntity;
+import javafx.collections.ObservableList;
 import org.modelmapper.ModelMapper;
 import repository.DaoFactory;
 import repository.SuperDao;
@@ -26,8 +27,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer search(String s) throws SQLException {
-        return null;
+    public Customer search(Integer id) throws SQLException {
+        CustomerEntity customerEntity = customerDao.search(id);
+        return new ModelMapper().map(customerEntity, Customer.class);
     }
 
     @Override
@@ -44,7 +46,12 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public boolean delete(String s) throws SQLException {
+    public boolean delete(Integer id) throws SQLException {
         return false;
+    }
+
+    @Override
+    public ObservableList<Integer> getIds() throws SQLException {
+        return customerDao.getIds();
     }
 }
