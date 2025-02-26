@@ -21,6 +21,8 @@ public class DaoFactory{
             case CUSTOMERENTITY:return (T) new CustomerDaoImpl();
             case PRODUCTENTITY:return (T) new ProductDaoImpl();
             case ORDERENTITY:return (T) new OrderDaoImpl();
+            case ORDERDETAILENTITY:return (T) new OrderDetailDaoImpl();
+            case ORDERRETURNSENTITY:return (T) new OrderReturnsDaoImpl();
         }
         return null;
     }

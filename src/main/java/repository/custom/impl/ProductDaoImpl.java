@@ -2,10 +2,7 @@ package repository.custom.impl;
 
 import db.DBConnection;
 import dto.Product;
-import entity.EmployeeEntity;
-import entity.OrderDetailEntity;
-import entity.ProductDetailEntity;
-import entity.ProductEntity;
+import entity.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import repository.custom.ProductDao;
@@ -174,6 +171,15 @@ public class ProductDaoImpl implements ProductDao {
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setObject(1,orderDetailEntity.getQuantityPurchased());
         preparedStatement.setObject(2,orderDetailEntity.getProductCode());
+        return preparedStatement.executeUpdate()>0;
+    }
+
+    public boolean updateStock(OrderReturnEntity orderReturnEntity) throws SQLException {
+        String sql = "Update products set quantity=quantity+? where code=?";
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setObject(1,orderReturnEntity.getQuantityReturned());
+        preparedStatement.setObject(2,orderReturnEntity.getProductCode());
         return preparedStatement.executeUpdate()>0;
     }
 }

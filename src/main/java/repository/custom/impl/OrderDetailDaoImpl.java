@@ -34,6 +34,11 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
         return preparedStatement.executeUpdate() > 0;
     }
 
+    @Override
+    public OrderDetailEntity search(Integer integer) throws SQLException {
+        return null;
+    }
+
     public OrderDetailEntity getOrderDetail(Object orderId, Object productCode) throws SQLException {
         OrderDetailEntity orderDetailEntity = null;
         String sql = "Select * from orderdetail where order_id='"+orderId+"' and product_code='"+productCode+"'";
@@ -65,6 +70,16 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
             orderDetailEntityList.add(orderDetailEntity);
         }
         return orderDetailEntityList;
+    }
+
+    @Override
+    public boolean update(OrderDetailEntity entity) throws SQLException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(Integer integer) throws SQLException {
+        return false;
     }
 
 }

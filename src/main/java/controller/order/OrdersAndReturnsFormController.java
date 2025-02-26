@@ -1,6 +1,10 @@
 package controller.order;
 
 import com.jfoenix.controls.JFXTextField;
+import dto.BaseOrderOrderDetail;
+import dto.Order;
+import dto.OrderDetail;
+import dto.OrderReturn;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -10,8 +14,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import service.ServiceFactory;
+import service.SuperService;
+import service.custom.OrderDetailService;
+import service.custom.OrderReturnsService;
 import service.custom.OrderService;
 import service.custom.ProductService;
 import util.ServiceType;
@@ -22,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class OrdersAndReturnsFormController implements Initializable {
@@ -75,27 +84,103 @@ public class OrdersAndReturnsFormController implements Initializable {
     private Label lblTime;
 
     @FXML
-    private TableView<?> tblViewAllOrders;
+    private TableView tblViewAllOrders;
 
     @FXML
     private JFXTextField txtQuantityPurchased;
 
     ProductService productService = ServiceFactory.getInstance().getServiceType(ServiceType.PRODUCT);
     OrderService orderService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDER);
+    OrderDetailService orderDetailService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDERDETAIL);
+    OrderReturnsService orderReturnsService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDERRETURNS);
 
     @FXML
     void btnReloadDataOnAction(ActionEvent event) {
+        if(cmbOrderId.getSelectionModel().isEmpty()||cmbProductCode.getSelectionModel().isEmpty()){
+            new Alert(Alert.AlertType.ERROR,"all combo boxes must be selected").show();
+        }else{
+            try {
+                OrderDetail orderDetail = orderDetailService.getOrderDetail(cmbOrderId.getValue(), cmbProductCode.getValue());
+                if(orderDetail==null){
+                    new Alert(Alert.AlertType.ERROR,"incorrect product_code and order_id combo").show();
+                }else{
+                    txtQuantityPurchased.setText(String.valueOf(orderDetail.getQuantityPurchased()));
+                    btnReturn.setDisable(false);
+                }
 
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            }
+
+        }
     }
 
     @FXML
     void btnReloadOnAction(ActionEvent event) {
+        ObservableList<BaseOrderOrderDetail> baseOrderOrderDetailObservableList = FXCollections.observableArrayList();
+
+        try {
+            List<Order> allOrders = orderService.getAll();
+            List<OrderDetail> allOrderDetails = orderDetailService.getAll();
+
+            for(Order order:allOrders){
+                for(OrderDetail orderDetail:allOrderDetails){
+                    if(orderDetail.getOrderId().equals(order.getId())){
+                        BaseOrderOrderDetail baseOrderOrderDetail = new BaseOrderOrderDetail(
+                                order.getId(),
+                                orderDetail.getProductCode(),
+                                order.getEmployeeId(),
+                                order.getEmployeeName(),
+                                order.getCustomerId(),
+                                orderDetail.getUnitPrice(),
+                                order.getDate(),
+                                orderDetail.getQuantityPurchased(),
+                                order.getPaymentType()
+                        );
+                        baseOrderOrderDetailObservableList.add(baseOrderOrderDetail);
+                    }
+                }
+            }
+
+            tblViewAllOrders.setItems(baseOrderOrderDetailObservableList);
+            colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+            colProductId.setCellValueFactory(new PropertyValueFactory<>("productCode"));
+            colEmployeeId.setCellValueFactory(new PropertyValueFactory<>("employeeId"));
+            colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
+            colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+            colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
+            colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+            colQuantityPurchased.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+            colPaymentType.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+        }
+
 
     }
 
     @FXML
     void btnReturnOnAction(ActionEvent event) {
-
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to return this order?");
+        Optional<ButtonType> buttonType = alert.showAndWait();
+        if (buttonType.isPresent() && buttonType.get().getText().equals("OK")) {
+            OrderReturn orderReturn = new OrderReturn(
+                    Integer.parseInt(String.valueOf(cmbOrderId.getValue())),
+                    Integer.parseInt(String.valueOf(cmbProductCode.getValue())),
+                    Integer.parseInt(txtQuantityPurchased.getText()),
+                    lblDate.getText()
+            );
+            try {
+                boolean isAddedOrderReturn = orderReturnsService.add(orderReturn);
+                if(isAddedOrderReturn){
+                    new Alert(Alert.AlertType.INFORMATION,"order return has been successful").show();
+                }else{
+                    new Alert(Alert.AlertType.ERROR,"order return has been unsuccessful").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            }
+        }
     }
 
     @FXML

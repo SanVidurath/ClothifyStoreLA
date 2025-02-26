@@ -35,7 +35,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getAll() throws SQLException {
-        return List.of();
+        List<OrderEntity> all = orderDao.getAll();
+        List<Order> allOrders = new ArrayList<>();
+        all.forEach(orderEntity -> allOrders.add(new ModelMapper().map(orderEntity, Order.class)));
+        return allOrders;
     }
 
     @Override

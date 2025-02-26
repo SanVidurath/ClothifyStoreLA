@@ -1,6 +1,7 @@
 package repository.custom;
 
 import entity.OrderDetailEntity;
+import entity.OrderReturnEntity;
 import entity.ProductEntity;
 import javafx.collections.ObservableList;
 import repository.CrudDao;
@@ -13,4 +14,5 @@ public interface ProductDao extends CrudDao<ProductEntity, Integer> {
     ObservableList<Integer> getIds() throws SQLException;
     boolean updateStock(List<OrderDetailEntity> orderDetailEntityList) throws SQLException;
     boolean updateStock(OrderDetailEntity orderDetailEntity) throws SQLException;
+    boolean updateStock(OrderReturnEntity orderReturnEntity) throws SQLException;
 }

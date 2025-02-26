@@ -23,6 +23,8 @@ public class ServiceFactory{
             case CUSTOMER:return (T) new CustomerServiceImpl();
             case PRODUCT:return (T) new ProductServiceImpl();
             case ORDER:return (T) new OrderServiceImpl();
+            case ORDERDETAIL:return (T) new OrderDetailServiceImpl();
+            case ORDERRETURNS:return (T) new OrderReturnsServiceImpl();
         }
         return null;
     }
