@@ -2,6 +2,7 @@ package controller.customer;
 
 import com.jfoenix.controls.JFXTextField;
 import dto.Customer;
+import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -55,7 +56,8 @@ public class AddCustomerFormController {
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
+    @Inject
+    CustomerService customerService;
 
     @FXML
     void btnAddCustomerOnAction(ActionEvent event) {

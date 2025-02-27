@@ -36,6 +36,24 @@ import java.util.ResourceBundle;
 public class OrdersAndReturnsFormController implements Initializable {
 
     @FXML
+    private TableView tblOrderReturns;
+
+    @FXML
+    private TableColumn colProductCode;
+
+    @FXML
+    private Button btnReloadOrderReturns;
+
+    @FXML
+    private TableColumn colOrderIdOR;
+
+    @FXML
+    private TableColumn colQuantityPurchasedOR;
+
+    @FXML
+    private TableColumn colDateOR;
+
+    @FXML
     private Button btnReload;
 
     @FXML
@@ -96,23 +114,7 @@ public class OrdersAndReturnsFormController implements Initializable {
 
     @FXML
     void btnReloadDataOnAction(ActionEvent event) {
-        if(cmbOrderId.getSelectionModel().isEmpty()||cmbProductCode.getSelectionModel().isEmpty()){
-            new Alert(Alert.AlertType.ERROR,"all combo boxes must be selected").show();
-        }else{
-            try {
-                OrderDetail orderDetail = orderDetailService.getOrderDetail(cmbOrderId.getValue(), cmbProductCode.getValue());
-                if(orderDetail==null){
-                    new Alert(Alert.AlertType.ERROR,"incorrect product_code and order_id combo").show();
-                }else{
-                    txtQuantityPurchased.setText(String.valueOf(orderDetail.getQuantityPurchased()));
-                    btnReturn.setDisable(false);
-                }
 
-            } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-            }
-
-        }
     }
 
     @FXML
@@ -123,9 +125,9 @@ public class OrdersAndReturnsFormController implements Initializable {
             List<Order> allOrders = orderService.getAll();
             List<OrderDetail> allOrderDetails = orderDetailService.getAll();
 
-            for(Order order:allOrders){
-                for(OrderDetail orderDetail:allOrderDetails){
-                    if(orderDetail.getOrderId().equals(order.getId())){
+            for (Order order : allOrders) {
+                for (OrderDetail orderDetail : allOrderDetails) {
+                    if (orderDetail.getOrderId().equals(order.getId())) {
                         BaseOrderOrderDetail baseOrderOrderDetail = new BaseOrderOrderDetail(
                                 order.getId(),
                                 orderDetail.getProductCode(),
@@ -153,7 +155,7 @@ public class OrdersAndReturnsFormController implements Initializable {
             colQuantityPurchased.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             colPaymentType.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
 
 
@@ -161,26 +163,54 @@ public class OrdersAndReturnsFormController implements Initializable {
 
     @FXML
     void btnReturnOnAction(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to return this order?");
-        Optional<ButtonType> buttonType = alert.showAndWait();
-        if (buttonType.isPresent() && buttonType.get().getText().equals("OK")) {
-            OrderReturn orderReturn = new OrderReturn(
-                    Integer.parseInt(String.valueOf(cmbOrderId.getValue())),
-                    Integer.parseInt(String.valueOf(cmbProductCode.getValue())),
-                    Integer.parseInt(txtQuantityPurchased.getText()),
-                    lblDate.getText()
-            );
+        if (cmbOrderId.getSelectionModel().isEmpty() || cmbProductCode.getSelectionModel().isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "all combo boxes must be selected").show();
+        } else {
+            OrderDetail orderDetail = checkOrderDetail();
             try {
-                boolean isAddedOrderReturn = orderReturnsService.add(orderReturn);
-                if(isAddedOrderReturn){
-                    new Alert(Alert.AlertType.INFORMATION,"order return has been successful").show();
-                }else{
-                    new Alert(Alert.AlertType.ERROR,"order return has been unsuccessful").show();
+                boolean searched = orderReturnsService.search(Integer.parseInt(String.valueOf(cmbOrderId.getValue())), Integer.parseInt(String.valueOf(cmbProductCode.getValue())));
+                if (orderDetail == null) {
+                    new Alert(Alert.AlertType.ERROR, "incorrect product_code and order_id combo").show();
+                } else if (searched) {
+                    new Alert(Alert.AlertType.ERROR, "order has already been returned").show();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to return this order?");
+                    Optional<ButtonType> buttonType = alert.showAndWait();
+                    if (buttonType.isPresent() && buttonType.get().getText().equals("OK")) {
+                        OrderDetail orderDetailDetails = orderDetailService.getOrderDetail(Integer.parseInt(String.valueOf(cmbOrderId.getValue())), Integer.parseInt(String.valueOf(cmbProductCode.getValue())));
+                        OrderReturn orderReturn = new OrderReturn(
+                                Integer.parseInt(String.valueOf(cmbOrderId.getValue())),
+                                Integer.parseInt(String.valueOf(cmbProductCode.getValue())),
+                                orderDetailDetails.getQuantityPurchased(),
+                                lblDate.getText()
+                        );
+
+                        boolean isAddedOrderReturn = orderReturnsService.add(orderReturn);
+                        if (isAddedOrderReturn) {
+                            new Alert(Alert.AlertType.INFORMATION, "order return has been successful").show();
+                        } else {
+                            new Alert(Alert.AlertType.ERROR, "order return has been unsuccessful").show();
+                        }
+
+                    }
                 }
             } catch (SQLException e) {
-                new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
+
+
         }
+
+    }
+
+    private OrderDetail checkOrderDetail() {
+        OrderDetail orderDetail = null;
+        try {
+            orderDetail = orderDetailService.getOrderDetail(Integer.parseInt(String.valueOf(cmbOrderId.getValue())), Integer.parseInt(String.valueOf(cmbProductCode.getValue())));
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+        return orderDetail;
     }
 
     @FXML
@@ -198,12 +228,11 @@ public class OrdersAndReturnsFormController implements Initializable {
         loadOrderIds();
         loadProductCodes();
         setTimeAndDate();
-        btnReturn.setDisable(true);
 
 
     }
 
-    private void setTimeAndDate(){
+    private void setTimeAndDate() {
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String format = simpleDateFormat.format(date);
@@ -227,23 +256,39 @@ public class OrdersAndReturnsFormController implements Initializable {
         return newHour + ":" + newMin + ":" + newSec;
     }
 
-    private void loadProductCodes(){
+    private void loadProductCodes() {
         try {
             ObservableList<Integer> ids = productService.getIds();
             cmbProductCode.setItems(ids);
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 
-    private void loadOrderIds(){
+    private void loadOrderIds() {
         try {
             List<Integer> ids = orderService.getIds();
             ObservableList<Integer> orderIds = FXCollections.observableArrayList();
             orderIds.addAll(ids);
             cmbOrderId.setItems(orderIds);
         } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
+
+    public void btnReloadOrderReturnsOnAction(ActionEvent actionEvent) {
+        try {
+            List<OrderReturn> all = orderReturnsService.getAll();
+            ObservableList<OrderReturn> allOrderReturns = FXCollections.observableArrayList();
+            allOrderReturns.addAll(all);
+
+            tblOrderReturns.setItems(allOrderReturns);
+            colOrderIdOR.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+            colProductCode.setCellValueFactory(new PropertyValueFactory<>("productCode"));
+            colQuantityPurchasedOR.setCellValueFactory(new PropertyValueFactory<>("quantityReturned"));
+            colDateOR.setCellValueFactory(new PropertyValueFactory<>("date"));
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
 }

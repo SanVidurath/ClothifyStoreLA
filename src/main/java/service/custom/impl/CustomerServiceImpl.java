@@ -2,6 +2,7 @@ package service.custom.impl;
 
 import dto.Customer;
 import entity.CustomerEntity;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import org.modelmapper.ModelMapper;
 import repository.DaoFactory;
@@ -19,7 +20,8 @@ import java.util.List;
 
 public class CustomerServiceImpl implements CustomerService {
 
-    CustomerDao customerDao = DaoFactory.getInstance().getDaoType(DaoType.CUSTOMERENTITY);
+    @Inject
+    CustomerDao customerDao;
 
     @Override
     public boolean add(Customer customer) throws SQLException {

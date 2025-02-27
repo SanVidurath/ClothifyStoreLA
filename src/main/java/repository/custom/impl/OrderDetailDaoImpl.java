@@ -39,7 +39,7 @@ public class OrderDetailDaoImpl implements OrderDetailDao {
         return null;
     }
 
-    public OrderDetailEntity getOrderDetail(Object orderId, Object productCode) throws SQLException {
+    public OrderDetailEntity getOrderDetail(Integer orderId, Integer productCode) throws SQLException {
         OrderDetailEntity orderDetailEntity = null;
         String sql = "Select * from orderdetail where order_id='"+orderId+"' and product_code='"+productCode+"'";
         Connection connection = DBConnection.getInstance().getConnection();

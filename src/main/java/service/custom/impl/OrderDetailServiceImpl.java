@@ -46,7 +46,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
-    public OrderDetail getOrderDetail(Object orderId, Object productCode) throws SQLException {
+    public OrderDetail getOrderDetail(Integer orderId, Integer productCode) throws SQLException {
         OrderDetailEntity orderDetailEntity = orderDetailDao.getOrderDetail(orderId, productCode);
         return orderDetailEntity!=null?new ModelMapper().map(orderDetailEntity, OrderDetail.class):null;
     }

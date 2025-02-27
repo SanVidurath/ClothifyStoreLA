@@ -1,9 +1,9 @@
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import config.AppModule;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.util.Objects;
+import util.Navigator;
 
 public class Starter extends Application {
 
@@ -13,7 +13,12 @@ public class Starter extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/login_form.fxml")))));
-        stage.show();
+
+        Injector injector = Guice.createInjector(new AppModule());
+
+        Navigator.setStage(stage);
+        Navigator.setInjector(injector);
+
+        Navigator.navigateTo("login_form.fxml");
     }
 }

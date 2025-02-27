@@ -14,6 +14,7 @@ import util.ServiceType;
 
 import javax.management.modelmbean.ModelMBean;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderReturnsServiceImpl implements OrderReturnsService {
@@ -31,7 +32,10 @@ public class OrderReturnsServiceImpl implements OrderReturnsService {
 
     @Override
     public List<OrderReturn> getAll() throws SQLException {
-        return List.of();
+        List<OrderReturnEntity> all = orderReturnsDao.getAll();
+        List<OrderReturn> allOrderReturns = new ArrayList<>();
+        all.forEach(orderReturnEntity -> allOrderReturns.add(new ModelMapper().map(orderReturnEntity, OrderReturn.class)));
+        return allOrderReturns;
     }
 
     @Override
@@ -42,5 +46,10 @@ public class OrderReturnsServiceImpl implements OrderReturnsService {
     @Override
     public boolean delete(Integer integer) throws SQLException {
         return false;
+    }
+
+    @Override
+    public boolean search(Integer orderId, Integer productCode) throws SQLException {
+        return orderReturnsDao.search(orderId,productCode);
     }
 }

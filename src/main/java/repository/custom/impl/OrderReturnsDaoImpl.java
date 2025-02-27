@@ -1,6 +1,7 @@
 package repository.custom.impl;
 
 import db.DBConnection;
+import entity.OrderDetailEntity;
 import entity.OrderReturnEntity;
 import repository.DaoFactory;
 import repository.SuperDao;
@@ -10,7 +11,9 @@ import util.DaoType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderReturnsDaoImpl implements OrderReturnsDao {
@@ -49,7 +52,20 @@ public class OrderReturnsDaoImpl implements OrderReturnsDao {
 
     @Override
     public List<OrderReturnEntity> getAll() throws SQLException {
-        return List.of();
+        List<OrderReturnEntity> orderReturnEntityList = new ArrayList<>();
+        String sql = "Select * from orderreturns";
+        Connection connection = DBConnection.getInstance().getConnection();
+        ResultSet resultSet = connection.createStatement().executeQuery(sql);
+        while(resultSet.next()){
+            OrderReturnEntity orderReturnEntity = new OrderReturnEntity(
+                    Integer.parseInt(resultSet.getString(1)),
+                    Integer.parseInt(resultSet.getString(2)),
+                    Integer.parseInt(resultSet.getString(3)),
+                    (resultSet.getString(4))
+            );
+            orderReturnEntityList.add(orderReturnEntity);
+        }
+        return orderReturnEntityList;
     }
 
     @Override
@@ -60,5 +76,13 @@ public class OrderReturnsDaoImpl implements OrderReturnsDao {
     @Override
     public boolean delete(Integer integer) throws SQLException {
         return false;
+    }
+
+    @Override
+    public boolean search(Integer orderId, Integer productCode) throws SQLException {
+        String sql = "select * from orderreturns where order_id='"+orderId+"' and product_code='"+productCode+"'";
+        Connection connection = DBConnection.getInstance().getConnection();
+        ResultSet resultSet = connection.createStatement().executeQuery(sql);
+        return resultSet.next();
     }
 }
