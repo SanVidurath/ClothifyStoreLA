@@ -1,8 +1,8 @@
 package controller.supplier;
 
 import com.jfoenix.controls.JFXTextField;
-import dto.Employee;
 import dto.Supplier;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,10 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import org.jasypt.util.text.BasicTextEncryptor;
-import service.ServiceFactory;
 import service.custom.SupplierService;
-import util.ServiceType;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -44,7 +41,8 @@ public class ModifySupplierFormController implements Initializable {
     @FXML
     private JFXTextField txtPhoneNo;
 
-    SupplierService supplierService = ServiceFactory.getInstance().getServiceType(ServiceType.SUPPLIER);
+    @Inject
+    SupplierService supplierService;
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
@@ -85,7 +83,7 @@ public class ModifySupplierFormController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "all fields must be filled").show();
         } else {
 
-            Supplier supplier = new Supplier(1, nameText, companyText, emailText, phoneNoText);
+            Supplier supplier = new Supplier(Integer.parseInt(String.valueOf(cmbSupplierId.getValue())), nameText, companyText, emailText, phoneNoText);
             try {
                 boolean isUpdatedSupplier = supplierService.update(supplier);
                 if (isUpdatedSupplier) {

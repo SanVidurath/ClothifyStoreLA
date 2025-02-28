@@ -2,6 +2,7 @@ package controller.order;
 
 import com.jfoenix.controls.JFXTextField;
 import dto.*;
+import jakarta.inject.Inject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -13,9 +14,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
-import service.ServiceFactory;
-import service.custom.*;
-import util.ServiceType;
+import service.custom.CustomerService;
+import service.custom.EmployeeService;
+import service.custom.OrderService;
+import service.custom.ProductService;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -91,10 +93,17 @@ public class OrderFormController implements Initializable {
     @FXML
     private JFXTextField txtUnitPrice;
 
-    EmployeeService employeeService = ServiceFactory.getInstance().getServiceType(ServiceType.EMPLOYEE);
-    CustomerService customerService = ServiceFactory.getInstance().getServiceType(ServiceType.CUSTOMER);
-    ProductService productService = ServiceFactory.getInstance().getServiceType(ServiceType.PRODUCT);
-    OrderService orderService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDER);
+    @Inject
+    EmployeeService employeeService;
+
+    @Inject
+    CustomerService customerService;
+
+    @Inject
+    ProductService productService;
+
+    @Inject
+    OrderService orderService;
 
     ObservableList<CartTM> cartDataList = FXCollections.observableArrayList();
 

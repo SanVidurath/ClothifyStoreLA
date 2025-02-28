@@ -2,6 +2,7 @@ package controller.product;
 
 import com.jfoenix.controls.JFXTextField;
 import dto.Product;
+import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,11 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import service.ServiceFactory;
-import service.SuperService;
 import service.custom.ProductService;
 import service.custom.SupplierService;
-import util.ServiceType;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -71,8 +69,11 @@ public class AddProductsFormController implements Initializable {
     @FXML
     private JFXTextField txtUnitPrice;
 
-    SupplierService supplierService = ServiceFactory.getInstance().getServiceType(ServiceType.SUPPLIER);
-    ProductService productService = ServiceFactory.getInstance().getServiceType(ServiceType.PRODUCT);
+    @Inject
+    SupplierService supplierService;
+
+    @Inject
+    ProductService productService;
 
     @FXML
     void btnAddOnAction(ActionEvent event) {

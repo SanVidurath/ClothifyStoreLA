@@ -1,5 +1,6 @@
 package entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,13 +12,29 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Entity
+@Table(name = "products")
 public class ProductEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer code;
+
+    @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
     private String category;
+
+    @Column(nullable = false)
     private String size;
+
+    @Column(nullable = false, name = "unit_price")
     private Double unitPrice;
+
+    @Column(nullable = false, name = "quantity")
     private Integer quantityInStock;
+
+    @Column(nullable = false, name = "supplier_id")
     private Integer supplierId;
 
     @Override

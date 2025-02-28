@@ -1,28 +1,26 @@
 package service.custom.impl;
 
-import dto.Employee;
 import dto.Supplier;
-import entity.EmployeeEntity;
 import entity.SupplierEntity;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
-import org.apache.poi.ss.formula.functions.Mode;
 import org.modelmapper.ModelMapper;
-import repository.DaoFactory;
-import repository.SuperDao;
 import repository.custom.SupplierDao;
 import service.custom.SupplierService;
-import util.DaoType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SupplierServiceImpl implements SupplierService {
-    SupplierDao supplierDao = DaoFactory.getInstance().getDaoType(DaoType.SUPPLIERENTITY);
+
+    @Inject
+    SupplierDao supplierDao;
 
     @Override
     public boolean add(Supplier supplier) throws SQLException {
         SupplierEntity supplierEntity = new ModelMapper().map(supplier, SupplierEntity.class);
+        supplierEntity.setId(null);
         return supplierDao.add(supplierEntity);
     }
 

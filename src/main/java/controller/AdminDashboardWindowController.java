@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import util.Navigator;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,15 +37,16 @@ public class AdminDashboardWindowController {
 
         assert resource!=null;
 
-        Parent load = null;
         try {
-            load = FXMLLoader.load(resource);
-        } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-        }
+            FXMLLoader loader = new FXMLLoader(resource);
+            loader.setControllerFactory(Navigator.getInjector()::getInstance); // Guice injects controller
+            Parent load = loader.load();
 
-        ancPaneLoadContainer.getChildren().clear();
-        ancPaneLoadContainer.getChildren().add(load);
+            ancPaneLoadContainer.getChildren().clear();
+            ancPaneLoadContainer.getChildren().add(load);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
@@ -57,14 +59,15 @@ public class AdminDashboardWindowController {
 
         assert resource!=null;
 
-        Parent load = null;
         try {
-            load = FXMLLoader.load(resource);
-        } catch (IOException e) {
-            new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
-        }
+            FXMLLoader loader = new FXMLLoader(resource);
+            loader.setControllerFactory(Navigator.getInjector()::getInstance); // Guice injects controller
+            Parent load = loader.load();
 
-        ancPaneLoadContainer.getChildren().clear();
-        ancPaneLoadContainer.getChildren().add(load);
+            ancPaneLoadContainer.getChildren().clear();
+            ancPaneLoadContainer.getChildren().add(load);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 }

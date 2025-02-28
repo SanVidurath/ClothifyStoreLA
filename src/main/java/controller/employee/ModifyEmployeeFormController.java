@@ -2,7 +2,7 @@ package controller.employee;
 
 import com.jfoenix.controls.JFXTextField;
 import dto.Employee;
-import entity.EmployeeEntity;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,9 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import org.jasypt.util.text.BasicTextEncryptor;
-import service.ServiceFactory;
 import service.custom.EmployeeService;
-import util.ServiceType;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -53,7 +51,8 @@ public class ModifyEmployeeFormController implements Initializable {
     @FXML
     private JFXTextField txtPhoneNo;
 
-    EmployeeService employeeService = ServiceFactory.getInstance().getServiceType(ServiceType.EMPLOYEE);
+    @Inject
+    EmployeeService employeeService;
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
@@ -66,7 +65,6 @@ public class ModifyEmployeeFormController implements Initializable {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "do you want to delete this employee?");
                     Optional<ButtonType> buttonType = alert.showAndWait();
                     if (buttonType.isPresent() && buttonType.get().getText().equals("OK")) {
-
                         boolean isEmployeeDeleted = employeeService.delete(txtEmail.getText());
                         if (isEmployeeDeleted) {
                             new Alert(Alert.AlertType.INFORMATION, "employee has been deleted successfully").show();
@@ -102,7 +100,7 @@ public class ModifyEmployeeFormController implements Initializable {
                 BasicTextEncryptor basicTextEncryptor = new BasicTextEncryptor();
                 basicTextEncryptor.setPassword(emailText);
                 String encrypted = basicTextEncryptor.encrypt(passwordText);
-                Employee employee = new Employee(1, nameText, addressText, emailText, phoneNoText, encrypted);
+                Employee employee = new Employee(Integer.parseInt(String.valueOf(cmbEmployeeId.getValue())), nameText, addressText, emailText, phoneNoText, encrypted);
                 try {
                     boolean isUpdatedEmployee = employeeService.update(employee);
                     if (isUpdatedEmployee) {

@@ -1,14 +1,11 @@
 package service.custom.impl;
 
 import dto.Order;
-import dto.OrderDetail;
 import entity.OrderEntity;
+import jakarta.inject.Inject;
 import org.modelmapper.ModelMapper;
-import repository.DaoFactory;
-import repository.SuperDao;
 import repository.custom.OrderDao;
 import service.custom.OrderService;
-import util.DaoType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +13,8 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
 
-    OrderDao orderDao = DaoFactory.getInstance().getDaoType(DaoType.ORDERENTITY);
+    @Inject
+    OrderDao orderDao;
 
     @Override
     public boolean add(Order order) throws SQLException {

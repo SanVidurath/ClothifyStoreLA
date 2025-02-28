@@ -2,6 +2,7 @@ package controller.product;
 
 import com.jfoenix.controls.JFXTextField;
 import dto.Product;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,13 +11,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import service.ServiceFactory;
 import service.custom.ProductService;
-import util.ServiceType;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -49,7 +47,8 @@ public class ModifyProductsWindowController implements Initializable {
     @FXML
     private JFXTextField txtUnitPrice;
 
-    ProductService productService = ServiceFactory.getInstance().getServiceType(ServiceType.PRODUCT);
+    @Inject
+    ProductService productService;
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {

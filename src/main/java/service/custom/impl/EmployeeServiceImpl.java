@@ -1,27 +1,25 @@
 package service.custom.impl;
 
-import db.DBConnection;
 import dto.Employee;
 import entity.EmployeeEntity;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import org.modelmapper.ModelMapper;
-import repository.DaoFactory;
-import repository.SuperDao;
 import repository.custom.EmployeeDao;
 import service.custom.EmployeeService;
-import util.DaoType;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
-    EmployeeDao employeeDao = DaoFactory.getInstance().getDaoType(DaoType.EMPLOYEEENTITY);
+    @Inject
+    EmployeeDao employeeDao;
+
     @Override
     public boolean add(Employee employee) throws SQLException {
         EmployeeEntity employeeEntity = new ModelMapper().map(employee, EmployeeEntity.class);
+        employeeEntity.setId(null);
         return employeeDao.add(employeeEntity);
     }
 

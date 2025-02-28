@@ -1,10 +1,14 @@
 package repository.custom.impl;
 
+import config.HibernateConfig;
 import db.DBConnection;
 import entity.EmployeeEntity;
 import entity.SupplierEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import repository.custom.SupplierDao;
 
 import java.sql.Connection;
@@ -16,58 +20,99 @@ import java.util.List;
 
 public class SupplierDaoImpl implements SupplierDao {
     @Override
-    public boolean add(SupplierEntity entity) throws SQLException {
-        String sql = "Insert into suppliers(name,company,email,phone_number) values (?,?,?,?)";
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setObject(1, entity.getName());
-        preparedStatement.setObject(2, entity.getCompany());
-        preparedStatement.setObject(3, entity.getEmail());
-        preparedStatement.setObject(4, entity.getPhoneNo());
-        return preparedStatement.executeUpdate() > 0;
+    public boolean add(SupplierEntity supplierEntity) throws SQLException {
+        Transaction transaction = null;
+        try (Session session = HibernateConfig.getSession()) {
+            transaction = session.beginTransaction();
+            session.persist(supplierEntity);  // Recommended for Hibernate 6+
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            return false;
+        }
     }
 
     @Override
     public SupplierEntity search(String email) throws SQLException {
+        Transaction transaction = null;
         SupplierEntity supplierEntity = null;
-        String sql = "Select * from suppliers where email='" + email + "'";
-        Connection connection = DBConnection.getInstance().getConnection();
-        ResultSet resultSet = connection.createStatement().executeQuery(sql);
-        while (resultSet.next()) {
-            supplierEntity = new SupplierEntity(Integer.parseInt(resultSet.getString(1)), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
+        try (Session session = HibernateConfig.getSession()) {
+            transaction = session.beginTransaction();
+
+            // Find employee by email using HQL
+            supplierEntity = session.createQuery("FROM SupplierEntity e WHERE e.email = :email", SupplierEntity.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
+
+            transaction.commit();
+
+        }  catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+
         }
         return supplierEntity;
     }
 
     @Override
     public List<SupplierEntity> getAll() throws SQLException {
-        ArrayList<SupplierEntity> supplierEntityArrayListList = new ArrayList<>();
-        String sql = "Select * from suppliers";
-        Connection connection = DBConnection.getInstance().getConnection();
-        ResultSet resultSet = connection.createStatement().executeQuery(sql);
-        while (resultSet.next()) {
-            SupplierEntity supplierEntity = new SupplierEntity(Integer.parseInt(resultSet.getString(1)), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
-            supplierEntityArrayListList.add(supplierEntity);
+        try (Session session = HibernateConfig.getSession()) {
+            return session.createQuery("FROM SupplierEntity", SupplierEntity.class).list();
         }
-        return supplierEntityArrayListList;
     }
 
     @Override
-    public boolean update(SupplierEntity entity) throws SQLException {
-        String sql = "Update suppliers set name=?,company=?,phone_number=? where email='" + entity.getEmail() + "'";
-        Connection connection = DBConnection.getInstance().getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        preparedStatement.setObject(1, entity.getName());
-        preparedStatement.setObject(2, entity.getCompany());
-        preparedStatement.setObject(3, entity.getPhoneNo());
-        return preparedStatement.executeUpdate() > 0;
+    public boolean update(SupplierEntity supplierEntity) throws SQLException {
+        Transaction transaction = null;
+        try {
+            Session session = HibernateConfig.getSession();  // Do not auto-close
+            transaction = session.beginTransaction();
+
+            SupplierEntity existingSupplier = session.get(SupplierEntity.class, supplierEntity.getId());
+
+            if (existingSupplier == null) {
+                throw new SQLException("Supplier not found for ID: " + supplierEntity.getId());
+            }
+
+            existingSupplier.setName(supplierEntity.getName());
+            existingSupplier.setEmail(supplierEntity.getEmail());
+            existingSupplier.setCompany(supplierEntity.getCompany());
+            existingSupplier.setPhoneNo(supplierEntity.getPhoneNo());
+
+
+            session.merge(existingSupplier);  // Ensure it's within an open session
+
+            transaction.commit();
+            session.close();  // Manually close after committing
+            return true;
+        }  catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            return false;
+        }
     }
 
     @Override
     public boolean delete(String email) throws SQLException {
-        String sql = "Delete from suppliers where email='"+email+"'";
-        Connection connection = DBConnection.getInstance().getConnection();
-        return connection.createStatement().executeUpdate(sql)>0;
+        Transaction transaction = null;
+        try (Session session = HibernateConfig.getSession()) {
+            transaction = session.beginTransaction();
+
+            // Find employee by email using HQL
+            SupplierEntity supplierEntity= session.createQuery("FROM SupplierEntity e WHERE e.email = :email", SupplierEntity.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
+
+            if (supplierEntity != null) {
+                session.remove(supplierEntity);// Recommended for Hibernate 6+
+                transaction.commit();
+                return true;
+            } else {
+                return false;
+            }
+        }  catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            return false;
+        }
     }
 
     @Override
@@ -80,13 +125,14 @@ public class SupplierDaoImpl implements SupplierDao {
 
     @Override
     public SupplierEntity search(Integer id) throws SQLException {
+        Transaction transaction = null;
         SupplierEntity supplierEntity = null;
-        String sql = "Select * from suppliers where id='" + id + "'";
-        Connection connection = DBConnection.getInstance().getConnection();
-        ResultSet resultSet = connection.createStatement().executeQuery(sql);
-        while (resultSet.next()) {
-            supplierEntity = new SupplierEntity(Integer.parseInt(resultSet.getString(1)), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4),resultSet.getString(5) );
-
+        try (Session session = HibernateConfig.getSession()) {
+            transaction = session.beginTransaction();
+            supplierEntity = session.get(SupplierEntity.class, id);
+            transaction.commit();
+        }  catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
         return supplierEntity;
     }

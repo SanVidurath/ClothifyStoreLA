@@ -2,23 +2,18 @@ package service.custom.impl;
 
 import dto.OrderReturn;
 import entity.OrderReturnEntity;
+import jakarta.inject.Inject;
 import org.modelmapper.ModelMapper;
-import repository.DaoFactory;
-import repository.SuperDao;
 import repository.custom.OrderReturnsDao;
-import service.ServiceFactory;
-import service.SuperService;
 import service.custom.OrderReturnsService;
-import util.DaoType;
-import util.ServiceType;
 
-import javax.management.modelmbean.ModelMBean;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderReturnsServiceImpl implements OrderReturnsService {
-    OrderReturnsDao orderReturnsDao = DaoFactory.getInstance().getDaoType(DaoType.ORDERRETURNSENTITY);
+    @Inject
+    OrderReturnsDao orderReturnsDao;
 
     @Override
     public boolean add(OrderReturn orderReturn) throws SQLException {

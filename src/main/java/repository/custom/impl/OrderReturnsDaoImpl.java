@@ -1,13 +1,10 @@
 package repository.custom.impl;
 
 import db.DBConnection;
-import entity.OrderDetailEntity;
 import entity.OrderReturnEntity;
-import repository.DaoFactory;
-import repository.SuperDao;
+import jakarta.inject.Inject;
 import repository.custom.OrderReturnsDao;
 import repository.custom.ProductDao;
-import util.DaoType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderReturnsDaoImpl implements OrderReturnsDao {
-    ProductDao productDao = DaoFactory.getInstance().getDaoType(DaoType.PRODUCTENTITY);
+    @Inject
+    ProductDao productDao;
 
     @Override
     public boolean add(OrderReturnEntity entity) throws SQLException {

@@ -5,14 +5,8 @@ import entity.CustomerEntity;
 import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import org.modelmapper.ModelMapper;
-import repository.DaoFactory;
-import repository.SuperDao;
 import repository.custom.CustomerDao;
-import service.ServiceFactory;
-import service.SuperService;
 import service.custom.CustomerService;
-import util.DaoType;
-import util.ServiceType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,7 +19,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public boolean add(Customer customer) throws SQLException {
-        return customerDao.add(new ModelMapper().map(customer, CustomerEntity.class));
+        CustomerEntity customerEntity = new ModelMapper().map(customer, CustomerEntity.class);
+        customerEntity.setId(null);
+        return customerDao.add(customerEntity);
     }
 
     @Override

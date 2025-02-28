@@ -5,6 +5,7 @@ import dto.BaseOrderOrderDetail;
 import dto.Order;
 import dto.OrderDetail;
 import dto.OrderReturn;
+import jakarta.inject.Inject;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -16,13 +17,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
-import service.ServiceFactory;
-import service.SuperService;
 import service.custom.OrderDetailService;
 import service.custom.OrderReturnsService;
 import service.custom.OrderService;
 import service.custom.ProductService;
-import util.ServiceType;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -107,10 +105,17 @@ public class OrdersAndReturnsFormController implements Initializable {
     @FXML
     private JFXTextField txtQuantityPurchased;
 
-    ProductService productService = ServiceFactory.getInstance().getServiceType(ServiceType.PRODUCT);
-    OrderService orderService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDER);
-    OrderDetailService orderDetailService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDERDETAIL);
-    OrderReturnsService orderReturnsService = ServiceFactory.getInstance().getServiceType(ServiceType.ORDERRETURNS);
+    @Inject
+    ProductService productService;
+
+    @Inject
+    OrderService orderService;
+
+    @Inject
+    OrderDetailService orderDetailService;
+
+    @Inject
+    OrderReturnsService orderReturnsService;
 
     @FXML
     void btnReloadDataOnAction(ActionEvent event) {

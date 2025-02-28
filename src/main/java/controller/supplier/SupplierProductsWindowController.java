@@ -1,6 +1,7 @@
 package controller.supplier;
 
 import dto.Product;
+import jakarta.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,10 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import service.ServiceFactory;
-import service.SuperService;
 import service.custom.ProductService;
-import util.ServiceType;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -47,7 +45,8 @@ public class SupplierProductsWindowController {
     @FXML
     private TableView tblSupplierProducts;
 
-    ProductService productService = ServiceFactory.getInstance().getServiceType(ServiceType.PRODUCT);
+    @Inject
+    ProductService productService;
 
     @FXML
     void btnReloadOnAction(ActionEvent event) {

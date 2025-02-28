@@ -12,9 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import service.ServiceFactory;
 import service.custom.CustomerService;
-import util.ServiceType;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -79,6 +77,8 @@ public class AddCustomerFormController {
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR,e.getMessage()).show();
             }
+
+
         }
 
     }

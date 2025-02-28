@@ -3,6 +3,7 @@ package controller;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import dto.Employee;
+import jakarta.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.stage.Stage;
 import org.jasypt.util.text.BasicTextEncryptor;
-import service.ServiceFactory;
-import service.SuperService;
 import service.custom.EmployeeService;
-import util.ServiceType;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -38,7 +36,8 @@ public class LoginFormController {
     @FXML
     private JFXPasswordField txtPassword;
 
-    EmployeeService employeeService = ServiceFactory.getInstance().getServiceType(ServiceType.EMPLOYEE);
+    @Inject
+    EmployeeService employeeService;
 
     @FXML
     void btnLoginOnAction(ActionEvent event) {

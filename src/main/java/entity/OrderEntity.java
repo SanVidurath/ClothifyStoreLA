@@ -1,6 +1,8 @@
 package entity;
 
 import dto.OrderDetail;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Entity
+@Table(name = "orders")
 public class OrderEntity {
     private Integer id;
     private String date;

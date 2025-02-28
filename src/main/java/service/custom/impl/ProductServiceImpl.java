@@ -1,16 +1,12 @@
 package service.custom.impl;
 
-import dto.Employee;
 import dto.Product;
-import entity.EmployeeEntity;
 import entity.ProductEntity;
+import jakarta.inject.Inject;
 import javafx.collections.ObservableList;
 import org.modelmapper.ModelMapper;
-import repository.DaoFactory;
-import repository.SuperDao;
 import repository.custom.ProductDao;
 import service.custom.ProductService;
-import util.DaoType;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +14,8 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
 
-    ProductDao productDao = DaoFactory.getInstance().getDaoType(DaoType.PRODUCTENTITY);
+    @Inject
+    ProductDao productDao;
 
     @Override
     public boolean add(Product product) throws SQLException {
