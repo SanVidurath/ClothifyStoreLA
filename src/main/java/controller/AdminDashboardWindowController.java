@@ -51,7 +51,20 @@ public class AdminDashboardWindowController {
 
     @FXML
     void btnLoadViewReportsOnAction(ActionEvent event) {
+        URL resource = this.getClass().getResource("/view/view_reports.fxml");
 
+        assert resource!=null;
+
+        try {
+            FXMLLoader loader = new FXMLLoader(resource);
+            loader.setControllerFactory(Navigator.getInjector()::getInstance); // Guice injects controller
+            Parent load = loader.load();
+
+            ancPaneLoadContainer.getChildren().clear();
+            ancPaneLoadContainer.getChildren().add(load);
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     public void btnLoadModifyEmployeeOnAction(ActionEvent actionEvent) {
