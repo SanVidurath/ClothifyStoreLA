@@ -2,7 +2,7 @@
 
 ## Overview
 
-ClothifyStore is a Point of Sale (POS) system designed specifically for fashion shops. Built using JavaFX, it provides an intuitive graphical user interface (GUI) that simplifies sales transactions, inventory management, and customer tracking. The system follows the Layered Architecture, ensuring a clean separation of concerns and maintainability.
+This is a Point of Sale (POS) application designed specifically for fashion shops. Built using JavaFX, it provides an intuitive graphical user interface (GUI) that simplifies sales transactions, inventory management, and order tracking. The system follows the Layered Architecture, ensuring a clean separation of concerns and maintainability.
 
 ## Enhancements & Design Patterns
 * **Layered Architecture** - increased scalability, maintainability and modularity
