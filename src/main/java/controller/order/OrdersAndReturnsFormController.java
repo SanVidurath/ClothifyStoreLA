@@ -100,6 +100,7 @@ public class OrdersAndReturnsFormController implements Initializable {
             colEmployeeName.setCellValueFactory(new PropertyValueFactory<>("employeeName"));
             colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
             colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+            colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
             colPaymentType.setCellValueFactory(new PropertyValueFactory<>("paymentType"));
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
