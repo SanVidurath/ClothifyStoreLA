@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Point of Sale (POS) application designed specifically for fashion shops. Built using JavaFX, it provides an intuitive graphical user interface (GUI) that simplifies sales transactions, inventory management, and order tracking. The system follows the Layered Architecture, ensuring a clean separation of concerns and maintainability.
+This is a Point of Sale (POS) application designed specifically for fashion shops. Built using JavaFX and Maven, it provides an intuitive graphical user interface (GUI) that simplifies sales transactions, inventory management, and order tracking. The system follows the Layered Architecture, ensuring a clean separation of concerns and maintainability.
 
 ## Enhancements & Design Patterns
 * **Layered Architecture** - increased scalability, maintainability and modularity
@@ -14,10 +14,11 @@ This is a Point of Sale (POS) application designed specifically for fashion shop
 
 ## Features
 * **User-friendly UI** – JFoenix + JavaFX GUI.
-* **Maven Build Tool** - dependency management
+* **Maven Build Tool** - Dependency management
 * **Hibernate ORM** – Database interactions.
 * **Lombok Integration** – Reduces boilerplate code.
 * **Data Encryption** – Jasypt for secure password management.
+* **Handles JDBC Transactions**
 
 ## Technologies Used
 * Java
