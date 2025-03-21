@@ -1,24 +1,18 @@
-# ClothifyStoreLA
+# ClothifyStore - POS System for Fashion Shops
 
-Overview
+## Overview
 
 ClothifyStore is a Point of Sale (POS) system designed specifically for fashion shops. Built using JavaFX, it provides an intuitive graphical user interface (GUI) that simplifies sales transactions, inventory management, and customer tracking. The system follows the Layered Architecture, ensuring a clean separation of concerns and maintainability.
 
-Enhancements & Design Patterns
+## Enhancements & Design Patterns
+* **Layered Architecture** - increased scalability, maintainability and modularity
+* **Factory Design Pattern** - de-coupling of layers
+* **Strategy Design Pattern** - flexible business logic implementation
+* **Dependency Injection** - using Google Guice library
+* **Hibernate** - ORM tool for database management
+* **Jasper Reports** - generating reports
 
-Layered Architecture for better scalability and maintainability.
-
-Factory Design Pattern initially used for decoupling.
-
-Strategy Design Pattern for flexible business logic implementations.
-
-Dependency Injection (DI) implemented using Google Guice.
-
-Hibernate for ORM-based database management.
-
-Jasper Reports for generating professional-grade reports.
-
-Features
+## Features
 
 User-Friendly JavaFX GUI for efficient sales and inventory management.
 
