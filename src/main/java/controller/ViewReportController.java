@@ -39,10 +39,17 @@ public class ViewReportController {
             }
             JasperDesign jasperDesign = JRXmlLoader.load(reportStream);
 
+//            JRDesignQuery jrDesignQuery = new JRDesignQuery();
+//            jrDesignQuery.setText("SELECT * FROM Customers WHERE id='1'");
+//            jasperDesign.setQuery(jrDesignQuery);
+
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
-            JasperViewer.viewReport(jasperPrint);
+
+//            JasperExportManager.exportReportToPdfFile(jasperPrint, "customer_report.pdf");
+
+            JasperViewer.viewReport(jasperPrint,false);
         } catch (JRException | SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
@@ -50,12 +57,40 @@ public class ViewReportController {
 
     @FXML
     void btnViewOrderReportOnAction(ActionEvent event) {
+        try {
+            InputStream reportStream = getClass().getResourceAsStream("/reports/clothify_orders.jrxml");
+            if (reportStream == null) {
+                new Alert(Alert.AlertType.ERROR, "Report file not found in classpath!").show();
+                return;
+            }
+            JasperDesign jasperDesign = JRXmlLoader.load(reportStream);
 
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException | SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
     void btnViewProductReportOnAction(ActionEvent event) {
+        try {
+            InputStream reportStream = getClass().getResourceAsStream("/reports/clothify_products.jrxml");
+            if (reportStream == null) {
+                new Alert(Alert.AlertType.ERROR, "Report file not found in classpath!").show();
+                return;
+            }
+            JasperDesign jasperDesign = JRXmlLoader.load(reportStream);
 
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        } catch (JRException | SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
     }
 
     @FXML
@@ -71,7 +106,7 @@ public class ViewReportController {
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, DBConnection.getInstance().getConnection());
-            JasperViewer.viewReport(jasperPrint);
+            JasperViewer.viewReport(jasperPrint, false);
         } catch (JRException | SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
