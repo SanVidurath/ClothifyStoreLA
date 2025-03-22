@@ -35,3 +35,20 @@ This is a Point of Sale (POS) application designed specifically for fashion shop
 * Apache POI library
 * Log4j library
 
+
+## Getting Started
+
+### Prerequisites 
+1. JDK 11+
+2. MySQL Server
+
+### Installation
+1. Clone the repository and navigate to the directory :
+   `git clone https://github.com/SanVidurath/ClothifyStoreLA.git`
+   `cd ClothifyStoreLA`
+2. Open the project using your favorite IDE
+3. Change the database name, username and password in the config files
+4. Run the project
+
+## Contributions
+Contributions are welcome! If you found an issue or would like to submit an improvement to this project please submit an issue using the issues tab. Feel free to fork the project and submit a pull request.
