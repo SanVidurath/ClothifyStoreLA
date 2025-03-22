@@ -44,8 +44,8 @@ This is a Point of Sale (POS) application designed specifically for fashion shop
 
 ### Installation
 1. Clone the repository and navigate to the directory :
-   `git clone https://github.com/SanVidurath/ClothifyStoreLA.git
-   cd ClothifyStoreLA`
+   `git clone https://github.com/SanVidurath/ClothifyStoreLA.git`
+   ```cd ClothifyStoreLA```
 2. Open the project using your favorite IDE
 3. Change the database name, username and password in the config files
 4. Run the project
