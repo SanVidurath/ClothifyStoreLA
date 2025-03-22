@@ -13,11 +13,11 @@ This is a Point of Sale (POS) application designed specifically for fashion shop
 * **Jasper Reports** - generating reports
 
 ## Features
-* **User-friendly UI** – JFoenix + JavaFX GUI.
+* **User-friendly UI** – JFoenix + JavaFX GUI
 * **Maven Build Tool** - Dependency management
-* **Hibernate ORM** – Database interactions.
-* **Lombok Integration** – Reduces boilerplate code.
-* **Data Encryption** – Jasypt for secure password management.
+* **Hibernate ORM** – Database interactions
+* **Lombok Integration** – Reduces boilerplate code
+* **Data Encryption** – Jasypt for secure password management
 * **Handles JDBC Transactions**
 
 ## Technologies Used
