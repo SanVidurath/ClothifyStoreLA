@@ -54,4 +54,4 @@ This is a Point of Sale (POS) application designed specifically for fashion shop
 Contributions are welcome! If you found an issue or would like to submit an improvement to this project please submit an issue using the issues tab. Feel free to fork the project and submit a pull request.
 
 
-Test
+
